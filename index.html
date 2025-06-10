@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Defect Detection System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f5f9;
+            padding: 30px;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2563eb;
+            text-align: center;
+        }
+        .label {
+            font-weight: bold;
+        }
+        img {
+            margin-top: 10px;
+            max-width: 300px;
+        }
+        .graph-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Defect Detection AI</h1>
+
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <label class="label">Upload an Image:</label><br>
+            <input type="file" name="image" required><br>
+            <input type="hidden" name="webcam" value="false">
+            <button class="btn" type="submit">Predict from Image</button>
+        </form>
+
+        <form action="/predict" method="post" style="margin-top: 20px;">
+            <input type="hidden" name="webcam" value="true">
+            <button class="btn" type="submit">📷 Use Webcam to Capture</button>
+        </form>
+
+        {% if result %}
+        <div class="output">
+            <h2>📊 Prediction Summary</h2>
+            <p><strong>Status:</strong> {{ result }}</p>
+            <p><strong>Confidence:</strong> {{ confidence }}</p>
+            <p><strong>Timestamp:</strong> {{ timestamp }}</p> <!-- Optional -->
+            <p><strong>Casting Type:</strong> {{ casting_type }}</p>
+            <p><strong>Material:</strong> {{ material }}</p>
+            <p><strong>Part Type:</strong> {{ part_type }}</p>
+            <p><strong>Detected Defects:</strong> {{ detected_defects }}</p>
+            <p><strong>Severity:</strong> {{ severity }}</p>
+            <p><strong>Repair Time:</strong> {{ repair_time }}</p>
+            <p><strong>Solution:</strong> {{ solution }}</p>
+            <p><strong>Serial Number:</strong> {{ serial_number }}</p>
+
+            <p><strong>Uploaded Image:</strong><br>
+            <img src="{{ image_path }}"></p>
+
+            <p><strong>Confidence Chart:</strong><br>
+            <img src="{{ chart_path }}"></p>
+
+            <h3>📈 Graphs Based on All Predictions</h3>
+            <div class="graph-section">
+                <div><img src="/static/uploads/{{ graph1 }}"><br><small>Defect Types Pie</small></div>
+                <div><img src="/static/uploads/{{ graph2 }}"><br><small>Defect Count Bar</small></div>
+                <div><img src="/static/uploads/{{ graph3 }}"><br><small>Material-wise Bar</small></div>
+                <div><img src="/static/uploads/{{ graph4 }}"><br><small>Defect Trend Over Time</small></div>
+                <div><img src="/static/uploads/{{ graph5 }}"><br><small>Defect vs Non-Defect</small></div>
+                <div><img src="/static/uploads/{{ graph6 }}"><br><small>Parts Tested per Shift</small></div>
+                <div><img src="/static/uploads/{{ graph7 }}"><br><small>Defective Parts per Shift</small></div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
